@@ -1,0 +1,72 @@
+var1   offset 0.  8 x 0.8
+var2   offset 0.  1 x 20.
+
+var1   offset 6.4  3 x 1.2
+var2   offset 0.  1 x 20.
+
+var1   offset 10.  9 x 1.6
+var2   offset 0.  1 x 20.
+
+var1   offset 0.  8 x 0.8
+var2   offset 20.  1 x 20.
+
+var1   offset 6.4  3 x 1.2
+var2   offset 20.  1 x 20.
+
+var1   offset 10.  9 x 1.6
+var2   offset 20.  1 x 20.
+
+var1   offset 0.  8 x 0.8
+var2   offset 40.  1 x 20.
+
+var1   offset 6.4  3 x 1.2
+var2   offset 40.  1 x 20.
+
+var1   offset 10.  9 x 1.6
+var2   offset 40.  1 x 20.
+
+
+var1   offset 0.  8 x 0.8
+var2   offset 60.  1 x 40.
+
+var1   offset 6.4  3 x 1.2
+var2   offset 60.  1 x 40.
+
+var1   offset 10.  9 x 1.6
+var2   offset 60.  1 x 40.
+
+
+var1   offset 0.  8 x 0.8
+var2   offset 100.  1 x 40.
+
+var1   offset 6.4  3 x 1.2
+var2   offset 100.  1 x 40.
+
+var1   offset 10.  9 x 1.6
+var2   offset 100.  1 x 40.
+
+var1   offset 0.  8 x 0.8
+var2   offset 140.  1 x 40.
+
+var1   offset 6.4  3 x 1.2
+var2   offset 140.  1 x 40.
+
+
+var1   offset 0.  8 x 0.8
+var2   offset 180.  1 x 60.
+
+
+var1   offset 6.4  1 x 1.2
+var2   offset 180.  1 x 60.
+
+
+var1   offset 0.  7 x 0.8
+var2   offset 240.  1 x 60.
+
+
+var1   offset 0.  5 x 0.8
+var2   offset 300.  1 x 60.
+
+
+
+

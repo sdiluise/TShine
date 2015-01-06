@@ -1,0 +1,63 @@
+/*
+ * TSPhaseSpaceFld.h
+ *
+ *  Created on: Jun 5, 2014
+ *      Author: Silvestro di Luise
+ *              Silvestro.Di.Luise@cern.ch
+ *
+ *
+ *
+ *
+ *
+ */
+
+#ifndef TSPHASESPACEFLD_H_
+#define TSPHASESPACEFLD_H_
+
+#include <string>
+#include <map>
+
+#include "TSHistogramFld.h"
+#include "TSPhaseSpaceMap.h"
+
+
+class TSPhaseSpaceFld: public TSNamed {
+
+	// to begin with
+	//  Relate to Map by pointer
+	//: public TSPhaseSpaceMap {
+
+
+public:
+
+	TSPhaseSpaceFld(std::string name, std::string tag, std::string title, const TSPhaseSpaceMap &);
+	virtual ~TSPhaseSpaceFld();
+
+
+	int Fill();
+	int GetEntriesIn() const {return fEntriesIn;}
+	TSHistogramFld* GetHistogramFld() const {return fHistoFld;}
+	int GetNumOfCalls() const {return fNumOfCalls;}
+	TString GetTag() const {return fTag;}
+	void Init();
+
+	void SetTag(std::string);
+
+private:
+
+
+	int fEntriesIn;
+	long int fNumOfCalls;
+
+	void fRenameHistos();
+
+	TString fTag;
+
+	const TSPhaseSpaceMap *fPhaseSpaceMap;
+	TSHistogramFld *fHistoFld;
+
+};
+
+
+
+#endif /* TSPHASESPACEFLD_H_ */

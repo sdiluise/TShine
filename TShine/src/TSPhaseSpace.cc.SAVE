@@ -1,0 +1,139 @@
+/*
+ * TSPhaseSpaceFld.cc
+ *
+ *  Created on: Jun 5, 2014
+ *      Author: sdiluise
+ */
+
+#include "MessageMgr.h"
+
+
+#include "TSPhaseSpaceFld.h"
+
+
+/*
+TSPhaseSpaceFld::TSPhaseSpaceFld() {
+	// TODO Auto-generated constructor stub
+
+}
+*/
+
+TSPhaseSpaceFld::TSPhaseSpaceFld(std::string name, std::string tag, std::string title,
+		const TSPhaseSpaceMap& map)
+:TSNamed(name,tag,title)
+{
+
+
+	Init();
+
+	SetTag(tag);
+
+
+	fPhaseSpaceMap = &map;
+
+	//Setup Histograms
+
+	fHistoFld = map.GetHistogramFld();
+
+	if( !fHistoFld ){
+		MSG::ERROR(__FILE__,"::",__FUNCTION__," TSHistogramFld not set");
+		return;
+	}
+
+	//cout<<fHistoFld<<" "<<fHistoFld->GetSize()<<endl;
+
+	fRenameHistos();
+
+
+}
+
+TSPhaseSpaceFld::~TSPhaseSpaceFld() {
+	// TODO Auto-generated destructor stub
+
+
+}
+
+int TSPhaseSpaceFld::Fill() {
+
+	if( !fHistoFld ){
+		MSG::ERROR(__FILE__,"::",__FUNCTION__," Histogram Fld not initialized");
+		return 0;
+	}
+
+	fNumOfCalls++;
+
+
+	//Check if is inside a bin;
+
+	int IsInside = fPhaseSpaceMap->FindVolume();
+
+	if( IsInside ){
+
+		fEntriesIn++;
+
+	}else{
+
+		return 0;
+	}
+
+
+
+	int NVars= fPhaseSpaceMap->GetDimension();
+
+	std::vector<TString> names;
+	std::vector<double> values;
+
+	for(int iv=1; iv<=NVars; ++iv){
+
+		names.push_back( (fPhaseSpaceMap->GetVariable(iv)->GetName()).c_str()  );
+		values.push_back( fPhaseSpaceMap->GetVariable(iv)->GetValue()  );
+
+		cout<<names.at(iv-1)<<" "<<values.at(iv-1)<<endl;
+	}
+
+
+
+	fHistoFld->Fill(names,values);
+
+	return 1;
+}
+
+
+
+void TSPhaseSpaceFld::Init() {
+
+	SetTag("tag");
+	fPhaseSpaceMap=0;
+	fHistoFld=0;
+
+	fNumOfCalls=0;
+	fEntriesIn=0;
+
+}
+
+
+void TSPhaseSpaceFld::fRenameHistos(){
+
+
+	if( !fHistoFld ) return;
+
+
+	fHistoFld->PrependToAllTitles(GetTag(),",");
+	fHistoFld->PrependToAllNames(GetName(),"_");
+
+
+
+}
+
+
+void TSPhaseSpaceFld::SetTag(std::string tag) {
+
+	fTag= tag.c_str();
+
+	if( fTag.IsWhitespace() ){
+		MSG::WARNING(__FILE__,"::",__FUNCTION__," Tag Is Empty");
+	}
+
+
+}
+

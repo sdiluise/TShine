@@ -1,0 +1,74 @@
+/*
+ * TSFunc1DGaussPdf.h
+ *
+ *  Created on: Aug 3, 2014
+ *      Author: Silvestro di Luise
+ *              Silvestro.Di.Luise@cern.ch
+ *
+ *
+ *
+ *
+ *
+ */
+
+#ifndef TSFUNC1DGAUSSPDF_H_
+#define TSFUNC1DGAUSSPDF_H_
+
+#include <TString.h>
+#include <TGraph.h>
+
+#include "TSParameter.h"
+
+#include "TSBaseFunction.h"
+
+class TSFunc1DGaussPdf: public TSBaseFunction {
+
+
+public:
+
+	TSFunc1DGaussPdf();
+	TSFunc1DGaussPdf(TString name,TString title);
+	TSFunc1DGaussPdf(TString name, TString title, const TSVariable &var_x, const TSParameter &mean, const TSParameter &sigma);
+	virtual ~TSFunc1DGaussPdf();
+
+
+	/*
+	 * Methods that need to be implemented from the mother class
+	 *
+	 */
+	virtual double DoEvalPar(const double *x, const double *p) const {return 0;};
+	virtual const double* Parameters() const {return 0;};
+	virtual void SetParameters(const double *p){  };
+
+	virtual unsigned int NDim() const {return fNDim;}
+	virtual unsigned int NPar() const {return fNPar;}
+
+	/** */
+
+
+	virtual double Eval() const;
+	virtual double Eval(double *x, double *y=0) const;
+
+	virtual void Init();
+
+	TGraph* GetGraph(int npts=300) const;
+
+private:
+
+	int fNDim;
+	int fNPar;
+
+	const TSVariable *fX;
+	const TSParameter *fMean;
+	const TSParameter *fSigma;
+
+	double fParams[2];
+
+	mutable double cache_x;
+	mutable double cache_pars[2];
+
+	mutable double cache_rms;
+
+};
+
+#endif /* TSFUNC1DGAUSSPDF_H_ */

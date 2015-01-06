@@ -1,0 +1,137 @@
+/*
+ * TSFunc1DGaussPointWeightPdf.cc
+ *
+ *  Created on: Aug 4, 2014
+ *      Author:
+ *
+ *
+ *
+ */
+
+
+#include "MessageMgr.h"
+
+#include <TMath.h>
+
+#include "TSFunc1DGaussPointWeightPdf.h"
+
+
+TSFunc1DGaussPointWeightPdf::TSFunc1DGaussPointWeightPdf() {
+
+
+}
+
+TSFunc1DGaussPointWeightPdf::TSFunc1DGaussPointWeightPdf(TString name, TString title
+				, const TSVariable &var_x, const TSParameter &mean, const TSParameter &sigma)
+:TSFunc1DGaussPdf(name,title,var_x,mean,sigma)
+{
+
+	fX=&var_x;
+	fMean = &mean;
+	fSigma = &sigma;
+
+}
+
+
+TSFunc1DGaussPointWeightPdf::~TSFunc1DGaussPointWeightPdf() {
+
+
+	delete fNPoints;
+	delete fPointMult;
+
+}
+
+
+
+void TSFunc1DGaussPointWeightPdf::Init() {
+
+	fNWeights = 0;
+	fNPoints = 0;
+    fPointMult=0;
+	fWeightsSum=0;
+
+}
+
+
+double TSFunc1DGaussPointWeightPdf::Eval() const{
+
+	if( fNWeights==0 ){
+		return TSFunc1DGaussPdf::Eval();
+	}
+
+
+	double xx= fX->GetValue();
+	double m= fMean->GetValue();
+	double s= fSigma->GetValue();
+
+	double f=0;
+
+	for(int iw=0; iw<fNWeights; ++iw){
+
+		float NP=fNPoints[iw];
+
+		if( NP<=0 ) continue;
+
+		double sw=s/TMath::Sqrt(NP);
+
+		f += fPointMult[iw]*TMath::Gaus(xx,m,sw);
+	}
+
+
+	return f/fWeightsSum;
+
+}
+
+
+
+int TSFunc1DGaussPointWeightPdf::SetPointDistribution(const TH1F &h) {
+
+	/**
+	 *
+	 *
+	 *
+	 *
+	 */
+
+	int nbins = h.GetNbinsX();
+
+	if( nbins == 0){
+		MSG::ERROR(__FILE__,"::",__FUNCTION__);
+		return 0;
+	}
+
+	fNWeights=0;
+
+	for(int ib=1; ib<=nbins; ++ib){
+
+		if(h.GetBinContent(ib)>=0 ) fNWeights++;
+	}
+
+	if( fNWeights == 0){
+		MSG::ERROR(__FILE__,"::",__FUNCTION__);
+		return 0;
+	}
+
+
+	delete fNPoints;
+	delete fPointMult;
+
+	fNPoints = new float[fNWeights];
+	fPointMult = new float[fNWeights];
+
+	fWeightsSum =0;
+
+	for(int ib=1; ib<=nbins; ++ib){
+
+		if(h.GetBinContent(ib)>=0 ){
+
+			fNPoints[ib-1]=h.GetXaxis()->GetBinCenter(ib);
+			fPointMult[ib-1]=h.GetBinContent(ib);
+
+			fWeightsSum += fPointMult[ib-1];
+		}
+	}
+
+
+	return 1;
+}

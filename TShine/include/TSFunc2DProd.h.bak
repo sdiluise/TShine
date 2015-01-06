@@ -1,0 +1,60 @@
+/*
+ * TSFunc2DProd.h
+ *
+ *  Created on: Aug 4, 2014
+ *      Author: Silvestro di Luise
+ *			    Silvestro.Di.Luise@cern.ch
+ *
+ */
+
+#ifndef TSFUNC2DPROD_H_
+#define TSFUNC2DPROD_H_
+
+#include "TSBaseFunction.h"
+
+/*
+ *
+ */
+class TSFunc2DProd: public TSBaseFunction {
+
+public:
+
+	TSFunc2DProd(TString name, TString title, const TSBaseFunction &funcX, const TSBaseFunction &funcY);
+
+	virtual ~TSFunc2DProd();
+
+	/*
+	 * Methods that need to be implemented from the mother class
+	 * ROOT::TMath::...
+	 *
+	 */
+
+	virtual double DoEvalPar(const double *x, const double *p) const {return 0;};
+	virtual const double* Parameters() const {return 0;}
+	virtual void SetParameters(const double *p) {}
+	//ROOT::Math::IParametricFunctionMultiDim* Clone() const
+	//   {
+	//	      return new TSBaseFunction();
+	//	   }
+
+	virtual unsigned int NDim() const {return fNDim;}
+	virtual unsigned int NPar() const {return fNPar;}
+	/** */
+
+	virtual void Init();
+
+	virtual double Eval() const;
+
+
+private:
+
+	int fNDim;
+	int fNPar;
+
+	const TSBaseFunction *fFuncX;
+	const TSBaseFunction *fFuncY;
+
+
+};
+
+#endif /* TSFUNC2DPROD_H_ */

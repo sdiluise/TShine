@@ -1,0 +1,137 @@
+/*
+ * TSFunc1DGaussPdf.cc
+ *
+ *  Created on: Aug 3, 2014
+ *      Author: Silvestro di Luise
+ *      	    Silvestro.Di.Luise@cern.ch
+ */
+
+
+#include <TMath.h>
+
+
+#include "TSFunc1DGaussPdf.h"
+
+TSFunc1DGaussPdf::TSFunc1DGaussPdf()
+{
+
+
+}
+
+TSFunc1DGaussPdf::TSFunc1DGaussPdf(TString name, TString title)
+{
+
+
+}
+
+
+TSFunc1DGaussPdf::TSFunc1DGaussPdf(TString name, TString title
+		,const TSVariable &var_x, const TSParameter &mean, const TSParameter &sigma)
+:TSBaseFunction(name,title)
+,fNDim(1),fNPar(2)
+,fX(0),fMean(0),fSigma(0)
+{
+
+	fX = &var_x;
+	fMean = &mean;
+	fSigma = &sigma;
+
+	fParams[0]=0;
+	fParams[1]=0;
+}
+
+
+TSFunc1DGaussPdf::~TSFunc1DGaussPdf() {
+
+
+}
+
+void TSFunc1DGaussPdf::Init() {
+
+	fNDim = 1;
+	fNPar = 2;
+	fX=0 ;
+	fMean=0;
+	fSigma=0;
+
+	fParams[0]=0;
+	fParams[1]=0;
+}
+
+
+
+double TSFunc1DGaussPdf::Eval() const{
+
+
+	double m=fMean->GetValue();
+	double s=fSigma->GetValue();
+
+	double xx=fX->GetValue();
+
+	//
+	//return normalized 1D gaussian
+	//
+	double v=TMath::Gaus(xx,m,s,1);
+
+	return v;
+
+}
+
+
+double TSFunc1DGaussPdf::Eval(double *x, double *y) const{
+
+
+	double m=fMean->GetValue();
+	double s=fSigma->GetValue();
+
+	cache_x=x[0];
+
+	//
+	//return normalized 1D gaussian
+	//
+	double v=TMath::Gaus(cache_x,m,s,1);
+
+	return v;
+
+}
+
+
+
+TGraph* TSFunc1DGaussPdf::GetGraph(int npts) const{
+
+	/**
+	 *
+	 *
+	 *
+	 *
+	 *
+	 *
+	 */
+
+
+	TGraph* g=new TGraph();
+
+	g->SetName( Name() );
+	g->SetTitle( Title() );
+
+	double xmin= fX->GetMin();
+	double xmax= fX->GetMax();
+
+
+	double x[2];
+
+	for(int i=0;i<npts;++i){
+
+		// npts points in [xmin,xmax]
+		x[0]= xmin;
+		if(npts>1) x[0] += xmax*i/(npts-1);
+
+		double y=Eval(x);
+
+		g->SetPoint(i,x[0],y);
+	}
+
+
+	return g;
+
+}

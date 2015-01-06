@@ -1,0 +1,74 @@
+/*
+ * TSNamed.h
+ *
+ *  Created on: May 26, 2014
+ *      Author: sdiluise
+ */
+/**
+
+Basic Class to implement Named Object.
+Attributes are Name, Label and a Title.
+
+Description = Title + Label
+
+
+
+*/
+
+#ifndef TSNAMED_H_
+#define TSNAMED_H_
+
+#include <string>
+
+#include <TString.h>
+#include <TObject.h>
+
+#include "StringUtils.h"
+
+
+#include "MessageMgr.h"
+
+
+using std::string;
+
+
+class TSNamed: public TObject {
+
+
+public:
+
+	TSNamed(string name, string label, string title);
+	TSNamed();
+	virtual ~TSNamed();
+
+	void Clear();
+
+	virtual string GetDescription() const {return fDescription;}
+	string GetLabel() const {return fLabel;}
+	string Name() const {return fName;}
+	string Title() const {return fTitle;}
+
+	const char* GetName() const { return fName.c_str(); }
+	const char* GetTitle() const { return fTitle.c_str(); }
+
+
+	virtual void SetLabel(string);
+	virtual void SetName(string);
+	virtual void SetTitle(string);
+
+
+private:
+
+
+	void fBuildStrDescription();
+
+
+	string fName;
+	string fLabel;
+	string fTitle;
+
+	string fDescription;
+
+};
+
+#endif /* TSNAMED_H_ */

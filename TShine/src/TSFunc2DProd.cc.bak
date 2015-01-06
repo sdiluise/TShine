@@ -1,0 +1,51 @@
+/*
+ * TSFunc2DProd.cc
+ *
+ *  Created on: Aug 4, 2014
+ *      Author: Silvestro di Luise
+ *			    Silvestro.Di.Luise@cern.ch
+ *
+ */
+
+#include "TSFunc2DProd.h"
+
+TSFunc2DProd::TSFunc2DProd(TString name, TString title, const TSBaseFunction &funcX, const TSBaseFunction &funcY)
+:TSBaseFunction(name,title)
+{
+
+
+	fFuncX=&funcX;
+	fFuncY=&funcY;
+
+	Init();
+
+}
+
+TSFunc2DProd::~TSFunc2DProd() {
+
+
+
+}
+
+
+
+
+void TSFunc2DProd::Init(){
+
+	fNDim = 2;
+
+	fNPar = fFuncX->NPar() + fFuncY->NPar();
+
+}
+
+
+
+double TSFunc2DProd::Eval() const{
+
+
+	double vx = fFuncX->Eval();
+	double vy = fFuncY->Eval();
+
+	return vx*vy;
+
+}

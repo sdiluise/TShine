@@ -1,0 +1,68 @@
+/*
+ * TSNamed.cc
+ *
+ *  Created on: May 26, 2014
+ *      Author: sdiluise
+ */
+
+#include "TSNamed.h"
+
+TSNamed::TSNamed() {
+	// TODO Auto-generated constructor stub
+
+	Clear();
+
+}
+
+TSNamed::TSNamed(string name, string label, string title) {
+
+
+  SetName(name);
+  SetLabel(label);
+  SetTitle(title);
+
+
+}
+
+TSNamed::~TSNamed() {
+	// TODO Auto-generated destructor stub
+}
+
+void TSNamed::Clear() {
+
+   fName="";
+   fTitle="";
+   fLabel="";
+   fDescription="";
+
+}
+
+
+void TSNamed::SetLabel(string s) {
+
+	fLabel=s;
+
+	fBuildStrDescription();
+}
+
+void TSNamed::SetName(string s) {
+
+	fName=s;
+}
+
+void TSNamed::SetTitle(string s) {
+
+	fTitle=s;
+
+	fBuildStrDescription();
+}
+
+
+
+void TSNamed::fBuildStrDescription() {
+
+
+ fDescription=fTitle; fDescription+=" "; fDescription+=fLabel;
+
+
+}
